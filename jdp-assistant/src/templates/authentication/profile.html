@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}Profile: {{ g.user['username'] }}{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<div id="app"></div>
+<script src="{{ url_for('static', filename='js/profile.js') }}" type="text/babel"></script>
+{% endblock %}
