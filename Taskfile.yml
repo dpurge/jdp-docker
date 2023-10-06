@@ -1,0 +1,42 @@
+version: '3'
+
+tasks:
+
+  jdp-buildenv:
+    desc: Build jdp-buildenv image
+    cmds:
+      - task: build
+        vars:
+          IMAGE: jdp-buildenv
+
+  jdp-buildenv-release:
+    desc: Release jdp-buildenv image
+    deps:
+      - jdp-buildenv
+    cmds:
+      - task: release
+        vars:
+          IMAGE: jdp-buildenv
+
+  build:
+    desc: Build docker image
+    internal: true
+    preconditions:
+      - test -f {{.IMAGE}}/Dockerfile
+    cmds:
+      - docker build -t {{.IMAGE}} {{.IMAGE}}
+    requires:
+      vars:
+        - IMAGE
+
+  release:
+    desc: Release docker image
+    internal: true
+    cmds:
+      - docker tag {{.IMAGE}} dpurge/{{.IMAGE}}
+      - docker tag {{.IMAGE}} dpurge/{{.IMAGE}}:{{now | date "2006-01-02"}}
+      - docker push dpurge/{{.IMAGE}}:{{now | date "2006-01-02"}}
+      - docker push dpurge/{{.IMAGE}}
+    requires:
+      vars:
+        - IMAGE

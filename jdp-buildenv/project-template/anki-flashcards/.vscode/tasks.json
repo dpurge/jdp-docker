@@ -1,0 +1,40 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build",
+            "type": "shell",
+            "command": [
+                "docker", "container", "run", "--rm", "-it",
+                "--mount", "type=bind,source=${workspaceFolder},destination=/workspace",
+                "dpurge/jdp-buildenv",
+                "jdp anki build-project --directory ./dist"
+            ],
+            "problemMatcher": [],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            }
+        }
+        // {
+        //     "label": "Build",
+        //     "type": "docker-run",
+        //     "dockerRun": {
+        //         "image": "dpurge/jdp-buildenv",
+        //         "command": "jdp anki build-project --directory ./dist",
+        //         "remove": true,
+        //         "volumes": [
+        //             {
+        //                 "containerPath": "/workspace",
+        //                 "localPath": "${workspaceFolder}"
+        //             }
+        //         ]
+        //     },
+        //     "problemMatcher": [],
+        //     "group": {
+        //         "kind": "build",
+        //         "isDefault": true
+        //     }
+        // }
+    ]
+}

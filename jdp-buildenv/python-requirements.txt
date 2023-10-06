@@ -1,0 +1,6 @@
+invoke==2.2.0
+pipenv==2023.10.3
+
+jdp-cli @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/cli
+jdp-cli-anki @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/anki
+jdp-cli-epub @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/epub

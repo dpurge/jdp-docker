@@ -1,0 +1,26 @@
+.card {
+    font-family: arial;
+    font-size: 20px;
+    text-align: center;
+    color: black;
+    background-color: white;
+}
+
+.phrase {
+    font-size: 120%;
+    color: #660000;
+}
+
+.grammar {
+    color: #0c0727;
+    font-style: bold;
+}
+
+.translation {
+    color: #000033;
+}
+
+.notes {
+    color: #663300;
+    font-style: italic;
+}

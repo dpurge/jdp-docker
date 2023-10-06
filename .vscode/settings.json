@@ -1,0 +1,8 @@
+{
+    "docker.commands.runInteractive": [
+        {
+            "label": "Run shell interactively",
+            "template": "docker run --rm -it ${exposedPorts} -v ${workspaceFolder}:/workspace ${tag}"
+        }
+    ]
+}

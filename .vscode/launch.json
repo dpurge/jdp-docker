@@ -20,7 +20,7 @@
             ],
             "jinja": true,
             "justMyCode": true,
-            "pythonPath": "${workspaceFolder}/jdp-assistant/.venv/Scripts/python.exe"
+            "python": "${workspaceFolder}/jdp-assistant/.venv/Scripts/python.exe"
         }
     ]
 }
