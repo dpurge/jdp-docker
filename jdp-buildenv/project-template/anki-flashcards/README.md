@@ -7,19 +7,21 @@ This directory contains sample project for building Anki vocabulary flashcards.
 - install Docker
 - install Visual Studio Code
 - copy contents of this directory to your workspace
+- initialize your git repository and install LFS if you want to use binary files in your flashcards
 
-Open workspace directory in Visual Studio Code and press `Ctrl+Shift+B` to start the build.
-Initialize your git repository and install LFS if you want to use binary files in your flashcards.
+Open workspace directory in Visual Studio Code, reopen in dev container.
+
+Press `Ctrl+Shift+B` to start the build.
 
 If everything is set up correctly, docker image with build tools should be automatically downloaded
-from the DockerHub and your build should run.
+from DockerHub and your build should run.
 
 ## Importing flashcards to Anki
 
-First, install [Anki](https://apps.ankiweb.net/#download) and build the project.
+Install [Anki](https://apps.ankiweb.net/#download) and build the project.
 
 If project has built successfully, you will find your `*.apkg` file in the `./dist` directory.
-The name of the output file can be changed in `jdp-apkg.toml`, the output directory can be changed in `.vscode/tasks.json`.
+The name of the output file can be changed in `jdp-apkg.toml`, the output directory can be changed in `Taskfile.yml`.
 
 In Anki, go to menu `File -> Import` and import the `*.apkg` file that you have built.
 Anki will show you a summary of what data has been imported to the deck.

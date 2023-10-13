@@ -1,0 +1,22 @@
+{
+    "name": "jdp-buildenv",
+    "image": "dpurge/jdp-buildenv",
+    
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "files.eol": "\n"
+            },
+            "extensions": [
+                "EditorConfig.EditorConfig",
+                "yzhang.markdown-all-in-one",
+                "mechatroner.rainbow-csv"
+            ]
+        }
+    },
+    
+    "remoteEnv": {
+    },
+
+    "postCreateCommand": "uname -a"
+}

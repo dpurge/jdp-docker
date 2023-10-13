@@ -1,0 +1,15 @@
+version: '3'
+
+vars:
+  DIST_DIR: '{{.ROOT_DIR}}/dist'
+  GIT_COMMIT:
+    sh: git log -n 1 --format=%h
+
+tasks:
+
+  build:
+    desc: Build Anki flashcards
+    preconditions:
+      - test -f jdp-apkg.toml
+    cmds:
+      - jdp anki build-project --directory {{.DIST_DIR}}
