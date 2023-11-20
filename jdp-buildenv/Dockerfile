@@ -10,6 +10,10 @@ RUN apt update; apt install -y --no-install-recommends \
     ca-certificates \
     calibre \
     curl \
+	fonts-arphic-ukai \
+	fonts-arphic-uming \
+	fonts-hosny-amiri \
+	fonts-noto \
     git \
     golang \
     gpg \
