@@ -1,5 +1,15 @@
-invoke==2.2.0
-pipenv==2023.10.3
+pipenv
+invoke
+knack
+genanki
+EbookLib
+Jinja2
+tomli
+pydantic
+PyYAML
+Markdown
+frontmatter
+markdown-full-yaml-metadata
 
 jdp-cli @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/cli
 jdp-cli-anki @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/anki

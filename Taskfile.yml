@@ -2,6 +2,22 @@ version: '3'
 
 tasks:
 
+  jdp-jenkins:
+    desc: Build jdp-jenkins image
+    cmds:
+      - task: build
+        vars:
+          IMAGE: jdp-jenkins
+
+  jdp-jenkins-release:
+    desc: Release jdp-jenkins image
+    deps:
+      - jdp-jenkins
+    cmds:
+      - task: release
+        vars:
+          IMAGE: jdp-jenkins
+
   jdp-buildenv:
     desc: Build jdp-buildenv image
     cmds:
