@@ -14,6 +14,8 @@ RUN apt update; apt install -y --no-install-recommends \
     golang \
     gpg \
     jq \
+	libopengl0 \
+	libxcb-cursor0 \
     python3 \
     python3-dev \
     python3-pip \
@@ -22,6 +24,7 @@ RUN apt update; apt install -y --no-install-recommends \
     python3-wheel \
     tzdata \
     unzip \
+	xz-utils \
     zsh \
     ; apt clean
     
@@ -39,7 +42,7 @@ RUN cd /usr/local/bin \
 
 COPY python-requirements.txt /workspace/python-requirements.txt
 
-RUN pip install -r /workspace/python-requirements.txt \
+RUN pip install --no-cache-dir -r /workspace/python-requirements.txt \
     && rm /workspace/python-requirements.txt
 
 ENV DEBIAN_FRONTEND=dialog

@@ -11,6 +11,6 @@ Markdown
 frontmatter
 markdown-full-yaml-metadata
 
-jdp-cli @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/cli
-jdp-cli-anki @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/anki
-jdp-cli-epub @ git+https://github.com/dpurge/jdp-cli@e045db4#subdirectory=src/epub
+jdp-cli @ git+https://github.com/dpurge/jdp-cli@main#subdirectory=src/cli
+jdp-cli-anki @ git+https://github.com/dpurge/jdp-cli@main#subdirectory=src/anki
+jdp-cli-epub @ git+https://github.com/dpurge/jdp-cli@main#subdirectory=src/epub
