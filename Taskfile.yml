@@ -2,22 +2,6 @@ version: '3'
 
 tasks:
 
-  jdp-jenkins:
-    desc: Build jdp-jenkins image
-    cmds:
-      - task: build
-        vars:
-          IMAGE: jdp-jenkins
-
-  jdp-jenkins-release:
-    desc: Release jdp-jenkins image
-    deps:
-      - jdp-jenkins
-    cmds:
-      - task: release
-        vars:
-          IMAGE: jdp-jenkins
-
   jdp-buildenv:
     desc: Build jdp-buildenv image
     cmds:
@@ -33,6 +17,38 @@ tasks:
       - task: release
         vars:
           IMAGE: jdp-buildenv
+
+  jdp-dictionary:
+    desc: Build jdp-dictionary image
+    cmds:
+      - task: build
+        vars:
+          IMAGE: jdp-dictionary
+
+  jdp-dictionary-release:
+    desc: Release jdp-dictionary image
+    deps:
+      - jdp-dictionary
+    cmds:
+      - task: release
+        vars:
+          IMAGE: jdp-dictionary
+
+  jdp-jenkins:
+    desc: Build jdp-jenkins image
+    cmds:
+      - task: build
+        vars:
+          IMAGE: jdp-jenkins
+
+  jdp-jenkins-release:
+    desc: Release jdp-jenkins image
+    deps:
+      - jdp-jenkins
+    cmds:
+      - task: release
+        vars:
+          IMAGE: jdp-jenkins
 
   build:
     desc: Build docker image
