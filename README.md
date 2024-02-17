@@ -1,11 +1,25 @@
 # JDP docker
 
+Build:
+
 ```pwsh
+task jdp-buildenv
+task jdp-dictionary
 docker build -t jdp-jupyter jdp-jupyter
 ```
 
+Run locally:
+
 ```pwsh
+docker run --interactive --tty --rm -v "${PWD}:/workspace" jdp-buildenv bash
 docker run -v "${PWD}:/workspace" -p 8888:8888 jdp-jupyter jupyter notebook
+```
+
+Release:
+
+```pwsh
+docker login
+task jdp-buildenv-release
 ```
 
 ```pwsh
