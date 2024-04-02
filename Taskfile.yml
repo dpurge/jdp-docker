@@ -64,11 +64,13 @@ tasks:
   release:
     desc: Release docker image
     internal: true
+    vars:
+      REGISTRY: registry.home.arpa:5000
     cmds:
-      - docker tag {{.IMAGE}} dpurge/{{.IMAGE}}
-      - docker tag {{.IMAGE}} dpurge/{{.IMAGE}}:{{now | date "2006-01-02"}}
-      - docker push dpurge/{{.IMAGE}}:{{now | date "2006-01-02"}}
-      - docker push dpurge/{{.IMAGE}}
+      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}
+      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{now | date "2006-01-02"}}
+      - docker push {{.REGISTRY}}/{{.IMAGE}}:{{now | date "2006-01-02"}}
+      - docker push {{.REGISTRY}}/{{.IMAGE}}
     requires:
       vars:
         - IMAGE
