@@ -37,10 +37,17 @@ RUN apt update; apt install -y --no-install-recommends \
     ; apt clean
 
 COPY python-requirements.txt /tmp/python-requirements.txt
-COPY install.sh /tmp/install.sh
+ADD https://github.com/go-task/task/releases/download/v3.35.1/task_linux_amd64.tar.gz /tmp/task_linux_amd64.tar.gz
+ADD https://github.com/mikefarah/yq/releases/download/v4.43.1/yq_linux_amd64.tar.gz /tmp/yq_linux_amd64.tar.gz
 
-RUN pip install --no-cache-dir -r /tmp/python-requirements.txt && rm /tmp/python-requirements.txt
-RUN sh /tmp/install.sh && rm /tmp/install.sh
+RUN pip install --no-cache-dir -r /tmp/python-requirements.txt \
+    && rm /tmp/python-requirements.txt \
+    && mkdir -p /usr/local/bin \
+    && cd /usr/local/bin \
+    && tar -xzvf /tmp/task_linux_amd64.tar.gz task \
+    && tar --transform='s/_linux_amd64//' -xzvf /tmp/yq_linux_amd64.tar.gz ./yq_linux_amd64 \
+    && rm -f /tmp/*.tar.gz \
+    && mkdir /workspace
 
 ENV DEBIAN_FRONTEND=dialog
 
