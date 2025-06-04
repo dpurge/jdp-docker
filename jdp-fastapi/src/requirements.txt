@@ -1,0 +1,11 @@
+# Prometheus
+prometheus_client==0.21.0
+
+# FastAPI
+fastapi[standard]==0.115.11
+pydantic==2.10.6
+
+# PostgreSQL
+asyncpg==0.30.0
+pg8000==1.31.2
+SQLAlchemy==2.0.32

@@ -1,76 +1,82 @@
 version: '3'
 
+vars:
+  REGISTRY: registry.home.arpa:5000
+  GIT_BRANCH:
+    sh: git rev-parse --abbrev-ref HEAD
+  GIT_COMMIT:
+    sh: git log -n 1 --format=%h
+  BUILD_DATE:
+    sh: date '+%Y-%m-%d'
+  BASE_IMAGES: |
+    jdp-python
+    jdp-ubuntu
+  APP_IMAGES: |
+    jdp-fastapi
+    jdp-build
+    jdp-ebook
+
 tasks:
 
-  jdp-buildenv:
-    desc: Build jdp-buildenv image
+  build-base:
+    desc: Build base docker images
     cmds:
-      - task: build
+      - for:
+          var: BASE_IMAGES
+        task: build
         vars:
-          IMAGE: jdp-buildenv
+          IMAGE: '{{.ITEM}}'
 
-  jdp-buildenv-release:
-    desc: Release jdp-buildenv image
-    deps:
-      - jdp-buildenv
+  build-app:
+    desc: Build application docker images
     cmds:
-      - task: release
+      - for:
+          var: APP_IMAGES
+        task: build
         vars:
-          IMAGE: jdp-buildenv
+          IMAGE: '{{.ITEM}}'
 
-  jdp-dictionary:
-    desc: Build jdp-dictionary image
+  push-base:
+    desc: Push base docker images
     cmds:
-      - task: build
+      - for:
+          var: BASE_IMAGES
+        task: push
         vars:
-          IMAGE: jdp-dictionary
-
-  jdp-dictionary-release:
-    desc: Release jdp-dictionary image
-    deps:
-      - jdp-dictionary
-    cmds:
-      - task: release
-        vars:
-          IMAGE: jdp-dictionary
-
-  jdp-jenkins:
-    desc: Build jdp-jenkins image
-    cmds:
-      - task: build
-        vars:
-          IMAGE: jdp-jenkins
-
-  jdp-jenkins-release:
-    desc: Release jdp-jenkins image
-    deps:
-      - jdp-jenkins
-    cmds:
-      - task: release
-        vars:
-          IMAGE: jdp-jenkins
+          IMAGE: '{{.ITEM}}'
 
   build:
-    desc: Build docker image
+    desc: Build docker image (task build IMAGE=jdp-python)
     internal: true
     preconditions:
       - test -f {{.IMAGE}}/Dockerfile
     cmds:
-      - docker build -t {{.IMAGE}} {{.IMAGE}}
+      - docker buildx build --platform=linux/amd64 --build-arg VERSION={{.BUILD_DATE}} --build-arg BRANCH={{.GIT_BRANCH}} --build-arg COMMIT={{.GIT_COMMIT}} -t {{.IMAGE}} {{.IMAGE}}
     requires:
       vars:
+        - GIT_BRANCH
+        - GIT_COMMIT
+        - BUILD_DATE
         - IMAGE
 
-  release:
-    desc: Release docker image
-    internal: true
-    vars:
-      REGISTRY: registry.home.arpa:5000
+  push:
+    desc: Push docker image (task push IMAGE=jdp-python)
+    # internal: true
     cmds:
       - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}
-      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{now | date "2006-01-02"}}
-      - docker push {{.REGISTRY}}/{{.IMAGE}}:{{now | date "2006-01-02"}}
+      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
+      - docker push {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
       - docker push {{.REGISTRY}}/{{.IMAGE}}
+    requires:
+      vars:
+        - REGISTRY
+        - IMAGE
+        - BUILD_DATE
+
+  test:
+    desc: Test docker image interactively (task test IMAGE=jdp-build)
+    cmds:
+      - docker run -it --rm --entrypoint /bin/bash -v ${PWD}:/workspace {{.IMAGE}}
     requires:
       vars:
         - IMAGE
