@@ -1,4 +1,4 @@
-FROM jdp-build
+FROM registry.home.arpa:5000/jdp-build:latest
 
 ARG VERSION=${VERSION}
 ARG BRANCH=${BRANCH}

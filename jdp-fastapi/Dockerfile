@@ -1,4 +1,4 @@
-FROM jdp-python
+FROM registry.home.arpa:5000/jdp-python:latest
 
 ARG VERSION=${VERSION}
 ARG BRANCH=${BRANCH}

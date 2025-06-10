@@ -51,20 +51,21 @@ tasks:
     preconditions:
       - test -f {{.IMAGE}}/Dockerfile
     cmds:
-      - docker buildx build --platform=linux/amd64 --build-arg VERSION={{.BUILD_DATE}} --build-arg BRANCH={{.GIT_BRANCH}} --build-arg COMMIT={{.GIT_COMMIT}} -t {{.IMAGE}} {{.IMAGE}}
+      - docker build --platform=linux/amd64 --pull=false --build-arg VERSION={{.BUILD_DATE}} --build-arg BRANCH={{.GIT_BRANCH}} --build-arg COMMIT={{.GIT_COMMIT}} -t {{.IMAGE}} {{.IMAGE}}
+      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}
+      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
     requires:
       vars:
         - GIT_BRANCH
         - GIT_COMMIT
         - BUILD_DATE
+        - REGISTRY
         - IMAGE
 
   push:
     desc: Push docker image (task push IMAGE=jdp-python)
     # internal: true
     cmds:
-      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}
-      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
       - docker push {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
       - docker push {{.REGISTRY}}/{{.IMAGE}}
     requires:
