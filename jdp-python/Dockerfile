@@ -1,4 +1,5 @@
-FROM python:3.13.3-slim
+ARG PYTHON_VERSION=3.14-slim
+FROM --platform=linux/amd64 python:${PYTHON_VERSION}
 
 ARG VERSION=${VERSION}
 ARG BRANCH=${BRANCH}
@@ -15,12 +16,12 @@ RUN apt update && apt upgrade --yes && apt install --yes --no-install-recommends
     expat \
     gcc \
     minizip \
-    ; apt clean \
-    ; mkdir -p /home/application /app \
-    ; groupadd -r application \
-    ; useradd -r -g application -s /sbin/nologin -d /home/application application \
-    ; chown -R application:application /home/application /app \
-    ; chmod -R 550 /app
+    && apt clean \
+    && mkdir -p /home/application /app \
+    && groupadd -r application \
+    && useradd -r -g application -s /sbin/nologin -d /home/application application \
+    && chown -R application:application /home/application /app \
+    && chmod -R 550 /app
 
 USER application
 

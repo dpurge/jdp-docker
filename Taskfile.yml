@@ -9,12 +9,13 @@ vars:
   BUILD_DATE:
     sh: date '+%Y-%m-%d'
   BASE_IMAGES: |
-    jdp-python
     jdp-ubuntu
+    jdp-python
   APP_IMAGES: |
-    jdp-fastapi
     jdp-build
-    jdp-ebook
+    jdp-code
+  # jdp-fastapi
+  # jdp-ebook
 
 tasks:
 
@@ -45,15 +46,24 @@ tasks:
         vars:
           IMAGE: '{{.ITEM}}'
 
+  push-app:
+    desc: Push application docker images
+    cmds:
+      - for:
+          var: APP_IMAGES
+        task: push
+        vars:
+          IMAGE: '{{.ITEM}}'
+
   build:
     desc: Build docker image (task build IMAGE=jdp-python)
     internal: true
     preconditions:
       - test -f {{.IMAGE}}/Dockerfile
     cmds:
-      - docker build --platform=linux/amd64 --pull=false --build-arg VERSION={{.BUILD_DATE}} --build-arg BRANCH={{.GIT_BRANCH}} --build-arg COMMIT={{.GIT_COMMIT}} -t {{.IMAGE}} {{.IMAGE}}
-      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}
-      - docker tag {{.IMAGE}} {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
+      - docker build --platform=linux/amd64 --pull=false --build-arg VERSION={{.BUILD_DATE}} --build-arg BRANCH={{.GIT_BRANCH}} --build-arg COMMIT={{.GIT_COMMIT}} -t {{.IMAGE}}:latest {{.IMAGE}}
+      - docker tag {{.IMAGE}}:latest {{.REGISTRY}}/{{.IMAGE}}:latest
+      - docker tag {{.IMAGE}}:latest {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
     requires:
       vars:
         - GIT_BRANCH
@@ -64,10 +74,10 @@ tasks:
 
   push:
     desc: Push docker image (task push IMAGE=jdp-python)
-    # internal: true
+    internal: true
     cmds:
       - docker push {{.REGISTRY}}/{{.IMAGE}}:{{.BUILD_DATE}}
-      - docker push {{.REGISTRY}}/{{.IMAGE}}
+      - docker push {{.REGISTRY}}/{{.IMAGE}}:latest
     requires:
       vars:
         - REGISTRY
@@ -77,7 +87,7 @@ tasks:
   test:
     desc: Test docker image interactively (task test IMAGE=jdp-build)
     cmds:
-      - docker run -it --rm --entrypoint /bin/bash -v ${PWD}:/workspace {{.IMAGE}}
+      - docker run -it --rm --entrypoint /bin/bash -v ${PWD}:/workspace -p 8080:8080 {{.REGISTRY}}/{{.IMAGE}}:latest
     requires:
       vars:
         - IMAGE
